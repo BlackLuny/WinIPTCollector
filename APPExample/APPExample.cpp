@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "../libWinIPTCollector/pub/ipt_collector.h"
+#include "../share/common/ToolFunc.h"
 int main(int argc, char* argv[])
 {
 	if (argc < 2)
@@ -10,8 +11,12 @@ int main(int argc, char* argv[])
 		std::cout << "Please input process name!\n";
 		return 0;
 	}
+	SetOutPutPath("X:\\");
+	std::string myProcessName = argv[0];
+	unsigned int myPid = GetPid(myProcessName);
+	SetupServerPid(myPid);
 	const char * processName = argv[1];
-	CollectIPT(processName);
+	CollectIPTByProcessName(processName);
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

@@ -4,6 +4,11 @@
 #include <string>
 std::string g_outPathNoPMI = "X:\\";
 
+extern "C" void SetOutPutPath(const char *path)
+{
+	g_outPathNoPMI = path;
+}
+
 unsigned int FetchData(ThreadWraperNoPMI *inst, void *outBuffer, unsigned int outBufferLen)
 {
 	auto origBuff = inst->GetOutBuff();

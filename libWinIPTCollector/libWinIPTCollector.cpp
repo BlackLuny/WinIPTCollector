@@ -6,7 +6,7 @@
 #include "../share/common/CPtkGenCfg.h"
 #include <algorithm>
 #include "ThreadWraperNoPMI.h"
-#define DEVICE_NAME L"\\\\.\\PtCollector"
+#define DEVICE_NAME L"\\\\.\\WinIPTCollecctor"
 #define MSR_PLATFORM_INFO 0xce
 HANDLE g_Device = INVALID_HANDLE_VALUE;
 
@@ -100,10 +100,9 @@ int SetupPtNoPmi(DWORD pid, DWORD buffSize, DWORD mtcFreq, DWORD psbFeq, DWORD c
 	CreateThread4NoPMI();
 	return 0;
 }
-void SetupServerPid()
+extern "C" void SetupServerPid(unsigned int serverPid)
 {
-	std::string ourProcessName = "PtkGenerator.exe";
-	auto ourPID = GetPid(ourProcessName);
+	auto ourPID = serverPid;
 	PtSetupServerPid info;
 	info.pid = ourPID;
 	PtSetupServerPidRsp rst = { 0 };
@@ -137,20 +136,14 @@ unsigned long long ReadNomFreq()
 
 void SetupNoPmi()
 {
-	SetupServerPid();
 	auto rst = SetupPtNoPmi(CPtkGenCfg::Instance()->getPid(),
 		CPtkGenCfg::Instance()->getBufferSize(), CPtkGenCfg::Instance()->getMtcFreq(),
 		CPtkGenCfg::Instance()->getPsbFreq(), CPtkGenCfg::Instance()->getCycThld(),
 		CPtkGenCfg::Instance()->getAddrCfg(0), CPtkGenCfg::Instance()->getAddrA(0), CPtkGenCfg::Instance()->getAddrB(0));
 }
-extern "C" int CollectIPT(const char *procName)
+
+extern "C" int CollectIPTByPID(unsigned int pid)
 {
-	std::string processName = procName;
-	auto pid = GetPid(processName);
-	if (pid == -1) {
-		std::cout << "Process " << processName << " is not running!\n";
-		return 0;
-	}
 	CPtkGenCfg::Instance()->setPid(pid);
 	std::string cfgFile;
 	Wchar_tToString(cfgFile, (wchar_t*)L"config.ini");
@@ -164,4 +157,15 @@ extern "C" int CollectIPT(const char *procName)
 	}
 	CloseHandle(g_Device);
 	return 0;
+}
+
+extern "C" int CollectIPTByProcessName(const char *procName)
+{
+	std::string processName = procName;
+	auto pid = GetPid(processName);
+	if (pid == -1) {
+		std::cout << "Process " << processName << " is not running!\n";
+		return 0;
+	}
+	CollectIPTByPID(pid);
 }
