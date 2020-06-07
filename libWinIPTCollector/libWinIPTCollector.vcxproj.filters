@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\pub">
+      <UniqueIdentifier>{36306009-1487-4280-8ad5-04150d5b6621}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="share">
+      <UniqueIdentifier>{d506d334-f513-4797-b37d-a2fb2b9569b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="share\common">
+      <UniqueIdentifier>{f4bbd30e-c8f1-46cc-8951-62dfa26e9074}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="share\itf">
+      <UniqueIdentifier>{029f07bf-e2f7-4e47-8d25-9fc33ad9dd03}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pub\ipt_collector.h">
+      <Filter>头文件\pub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\share\common\ConfigINI.h">
+      <Filter>share\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\share\common\CPtkGenCfg.h">
+      <Filter>share\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\share\common\ToolFunc.h">
+      <Filter>share\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\share\itf\ioctl_code.h">
+      <Filter>share\itf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\share\itf\itf.h">
+      <Filter>share\itf</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadWraperNoPMI.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\share\common\ProceessUtils.h">
+      <Filter>share\common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="libWinIPTCollector.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\share\common\CPtkGenCfg.cpp">
+      <Filter>share\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\share\common\ToolFunc.cpp">
+      <Filter>share\common</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadWraperNoPMI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\share\common\ProceessUtils.cpp">
+      <Filter>share\common</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
