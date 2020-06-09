@@ -7,7 +7,6 @@ CPTConfiger* g_allConfiger[32] = { 0 };
 
 void SetupPTFunc(void* param)
 {
-	//DbgBreakPoint();
 	PtSetupInfoInner* setupInfo = (PtSetupInfoInner*)param;
 	auto curCpu = ARCH::GetCurrentCpuIdx();
 	auto configer = new CPTConfiger(curCpu);
@@ -30,7 +29,7 @@ void StopPTFun(void* param)
 
 void SetupNotifier(PtSetupInfo* info, PtSetupRst *rst)
 {
-	// 依赖于先把configer设置好，因为configer是在dpc level
+	// Must setup configer before, because configer is running in DPC level
 	unsigned int num = 0;
 	for (unsigned int i = 0; i < info->cpuNum; ++i) {
 		auto configer = g_allConfiger[i];
@@ -42,11 +41,9 @@ void SetupNotifier(PtSetupInfo* info, PtSetupRst *rst)
 			continue;
 		}
 		notifier->SetParam(configer->GetIdx(), configer);
-		rst->recordInfo[num].rstInfo = (PtResultInfo*)notifier->GetUserTransBuff();
 		AddNotifier(notifier);
 		num++;
 	}
-	rst->recordNum = num;
 	GetOutputAddress(rst->outBufferInfo, rst->outBuffNum, rst->outBufferLen);
 }
 void SetupPtMain(void* info, void* rstInfo)
@@ -68,7 +65,7 @@ void StopPtMain()
 	ClearAllNotifier();
 	for (auto i = 0; i < 32; ++i) {
 		if (g_allConfiger[i] != nullptr) {
-			delete g_allConfiger[i];  // 析构configer
+			delete g_allConfiger[i];  // free memory
 			g_allConfiger[i] = nullptr;
 		}
 	}

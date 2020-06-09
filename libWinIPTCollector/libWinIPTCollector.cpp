@@ -50,7 +50,6 @@ void CreateThread4NoPMI()
 
 void SetupOutBufferNoPMI(PtSetupRst& setupRstInfo)
 {
-	std::cout << "bufferNum = " << setupRstInfo.recordNum << std::endl;
 	for (auto i = 0; i < g_allThreadNoPMI.size(); ++i) {
 		auto thread = g_allThreadNoPMI[i];
 		thread->SetOutBuff((void*)setupRstInfo.outBufferInfo[i]);
@@ -78,7 +77,7 @@ int SetupPtNoPmi(DWORD pid, DWORD buffSize, DWORD mtcFreq, DWORD psbFeq, DWORD c
 	setupInfo.addrsCfg[0].addrN_A = addrStart;
 	setupInfo.addrsCfg[0].addrN_B = addrEnd;
 
-	// 创建每个核心的对象
+	// Create collectors
 	CreateThreadWraperNoPMI(cpuNum);
 
 	PtSetupRst rst = { 0 };
@@ -94,9 +93,9 @@ int SetupPtNoPmi(DWORD pid, DWORD buffSize, DWORD mtcFreq, DWORD psbFeq, DWORD c
 		std::cout << "Setup PT rst error:" << rst.rst << std::endl;
 		return -1;
 	}
-	// 设置了pt之后，设置buffer
+	// After setup PT, setup output buffer
 	SetupOutBufferNoPMI(rst);
-	// 开始采集
+	// Start collecting data
 	CreateThread4NoPMI();
 	return 0;
 }

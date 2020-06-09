@@ -27,18 +27,8 @@ struct PtSetupInfo {
 	AddrRange addrsCfg[4];
 };
 
-struct PtResultInfo {
-	unsigned long long outputAddr;
-	unsigned int dataLen;
-};
-
-struct PtRecorInfo {
-	PtResultInfo* rstInfo;
-};
 struct PtSetupRst {
 	unsigned int rst;
-	unsigned int recordNum;
-	PtRecorInfo recordInfo[MAX_CPU_NUM];
 	unsigned int outBuffNum;
 	unsigned long long outBufferInfo[MAX_CPU_NUM];
 	unsigned int outBufferLen;
@@ -56,25 +46,6 @@ struct PtSetupServerPid {
 };
 struct PtSetupServerPidRsp {
 	unsigned int rst;
-};
-
-struct PtReadMemoryReq {
-	unsigned int pid;
-	unsigned int len; // <=4096
-	unsigned long long address;
-};
-struct PtReadMemoryRsp {
-	unsigned char data[4096];
-};
-struct PtWriteMemoryReq {
-	unsigned int pid;
-	unsigned long long address;
-	unsigned int len; // <=4096
-	unsigned char data[4096];
-};
-struct PtWriteMemoryRsp {
-	unsigned int rst;
-	unsigned int len;
 };
 
 #endif

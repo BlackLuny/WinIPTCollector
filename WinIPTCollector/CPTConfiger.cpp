@@ -6,7 +6,7 @@
 
 int CPTConfiger::SetupToPA(unsigned int buffSize)
 {
-	// 如果有之前的数据，先释放掉，因为可能这次的buffSize不一样了
+	// Shoud deconstruct ToPA, because bufferSize may different
 
 	topa_[0].DeconstructToPA();
 	buffSize_ = topa_[0].ConstructToPA(buffSize);

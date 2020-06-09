@@ -15,10 +15,6 @@ struct MemRegionInfo {
 	MemRegionInfo() = default;
 };
 bool GetProcessModulesInfo(unsigned int pid, std::vector<ModuleInfo>& moduleInfo);
-bool ReadProcessMemoryBB(
-	unsigned int pid, unsigned long long address, unsigned int len,
-	void* outputBuff, unsigned int outputBuffSize, unsigned int* outputSize);
-void EnumExecuteablePages(unsigned int pid, std::vector< MemRegionInfo> &regionInfo);
 void WriteMemoryBB(unsigned int pid, unsigned long long base, unsigned int size, void* buff);
 bool ReadMemoryByMap(unsigned int pid, unsigned long long address, unsigned int len,
 	void* outputBuff, unsigned int outputBuffSize, unsigned int* outputSize);

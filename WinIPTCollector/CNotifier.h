@@ -21,9 +21,6 @@ public:
 				MmUnmapLockedPages((PVOID)curConfig.userOutPutAddr_, curConfig.outPutBuffMdl_);
 				IoFreeMdl(curConfig.outPutBuffMdl_);
 			}
-			MmUnmapLockedPages((PVOID)userTransDataAddr_, transDataBuffMdl_);
-			IoFreeMdl(transDataBuffMdl_);
-			ExFreePool(transDataBuff_);
 		}
 		__except(1) {
 			DbgPrint("~CNotifier failed");
@@ -34,14 +31,7 @@ public:
 		return idx_;
 	}
 	void SetParam(int idx, CPTConfiger * configer);
-	unsigned long long GetUserTransBuff()
-	{
-		return userTransDataAddr_;
-	}
-	void *GetSysTransBuff()
-	{
-		return transDataBuff_;
-	}
+
 	unsigned long long GetUserOutputBuff(int idx)
 	{
 		return buffs_[idx].userOutPutAddr_;
@@ -56,8 +46,5 @@ private:
 	KDPC dpc_;
 	ConfigInfo buffs_[2]; // 
 	CPTConfiger* configer_; // 对应的配置器
-	void* transDataBuff_ = nullptr; // 给用户传递buff信息的地址，告诉用户在哪儿去读取数据
-	PMDL transDataBuffMdl_ = nullptr; // mdl
-	unsigned long long userTransDataAddr_ = 0; // 用户访问的
 };
 

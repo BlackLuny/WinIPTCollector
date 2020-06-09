@@ -9,11 +9,11 @@ struct TblItem {
 int CToPAConstructor::GetSizeEncodeValue(unsigned int size)
 {
 	if (size & 0xfff) {
-		// 非4k对其
+		// not 4k aliged
 		size = GetSizeAligned(size);
 	}
-	size >>= 12; // 先除4k
-	// 看1在第几位
+	size >>= 12; // divided 4k
+	// search for 1 pos
 	int pos = 0;
 	do {
 		if (size & 1) {
@@ -26,7 +26,7 @@ int CToPAConstructor::GetSizeEncodeValue(unsigned int size)
 
 unsigned int CToPAConstructor::GetSizeAligned(unsigned int size)
 {
-	unsigned int val = 4096; // 最小4k, 最大128M
+	unsigned int val = 4096; // at least 4k, at most 128M
 	while (val < size && val < 128 * 1024 * 1024) {
 		val <<= 1;
 	}
@@ -41,7 +41,7 @@ unsigned int CToPAConstructor::GetTableNum(unsigned int bufferSize)
 
 unsigned int CToPAConstructor::GetTableSize(unsigned int bufferSize)
 {
-	return GetTableNum(bufferSize) * 4096; // 4k = 一个表 = 8 * (511 + 1) = 511 ouput region + 1 nextTablePointer
+	return GetTableNum(bufferSize) * 4096; // 4k = one table = 8 * (511 + 1) = 511 ouput region + 1 nextTablePointer
 }
 
 CToPAConstructor::~CToPAConstructor()
@@ -125,7 +125,7 @@ unsigned int CToPAConstructor::ConstructTbl(unsigned int bufferSize, ToPAEntrySt
 {
 	RtlInitializeGenericTable(&tbl_, CompareTblItem, AllocateRoutine, FreeRoutine, nullptr);
 	bufferSize &= (~0xfff);
-	auto tableSize = GetTableSize(bufferSize);  // 一张大表的size
+	auto tableSize = GetTableSize(bufferSize);
 	tableAddr = (ToPAEntryStru*)(ARCH::AllocNonPagedMemory(tableSize));
 	ouputAddr = (char*)(ARCH::AllocNonPagedMemory(bufferSize));
 	memset(ouputAddr, 0xff, bufferSize);
@@ -135,23 +135,23 @@ unsigned int CToPAConstructor::ConstructTbl(unsigned int bufferSize, ToPAEntrySt
 	TblItem item;
 	item.idx = 0;
 	item.address = ARCH::GetPhyAddress(tableAddr).QuadPart;
-	RtlInsertElementGenericTable(&tbl_, &item, sizeof(item), nullptr);  // 记录下表的地址
+	RtlInsertElementGenericTable(&tbl_, &item, sizeof(item), nullptr);
 	while (curOutputAddr < endOutputAddr) {
 		auto curOutPutAddrPhyAddr = ARCH::GetPhyAddress(curOutputAddr);
 		auto& curTableItem = tableAddr[idx];
 		curTableItem.value = 0;
 		if ((idx + 1) % 512 == 0) {
-			// 最后一张表
+			// the last table
 			auto nextTableAddr = &tableAddr[idx + 1];
-			curTableItem.Bits.END = 1; // 指向下一张小表
-			curTableItem.Bits.INT = 0; // 不产生中断
-			curTableItem.Bits.STOP = 0; // 不停止
+			curTableItem.Bits.END = 1; // point to next table
+			curTableItem.Bits.INT = 0; // no interrupt
+			curTableItem.Bits.STOP = 0; // not stop
 			curTableItem.Bits.Size = 0; // ignore
 			curTableItem.Bits.PhyAddr = (ARCH::GetPhyAddress(nextTableAddr).QuadPart >> 12);
 
 			item.idx++;
 			item.address = ARCH::GetPhyAddress(nextTableAddr).QuadPart;
-			RtlInsertElementGenericTable(&tbl_, &item, sizeof(item), nullptr);  // 记录下表的地址
+			RtlInsertElementGenericTable(&tbl_, &item, sizeof(item), nullptr);
 		}
 		else {
 			curTableItem.Bits.PhyAddr = (curOutPutAddrPhyAddr.QuadPart) >> 12;
@@ -175,10 +175,10 @@ int CToPAConstructor::ConstructToPA(unsigned int bufferSize)
 	int idx = 0;
 	auto rstSize = ConstructTbl(bufferSize, tableAddr, ouputAddr, idx);
 	idx--;
-    tableAddr[idx].Bits.PhyAddr = (ARCH::GetPhyAddress(tableAddr).QuadPart >> 12);  // 指向第一张表，循
+    tableAddr[idx].Bits.PhyAddr = (ARCH::GetPhyAddress(tableAddr).QuadPart >> 12);  // Point to first table, ring buffer
 	tableAddr[idx].Bits.END = 1;
 	if ((idx + 1) % 512 != 0) {
-		// 不是最后一张表，最后一张表被用来end了，需要减去相应的长度
+		// Not the last table, the last table is marked as 'end'
 		rstSize -= 4096;
 	}
 	topa_.outputAddr = ouputAddr;

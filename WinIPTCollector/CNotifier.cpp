@@ -17,7 +17,7 @@ void CNotifier::OnNotify(void* param)
 void CNotifier::SetParam(int idx, CPTConfiger* configer)
 {
 	__try {
-		// 设置输出buff映射
+		// Setup output buffer map to r3
 		auto bufferNum = 1;
 		for (auto i = 0; i < bufferNum; ++i) {
 			auto curOutPutBuff = configer->GetBuffByIdx(i);
@@ -28,12 +28,6 @@ void CNotifier::SetParam(int idx, CPTConfiger* configer)
 		}
 		idx_ = idx;
 		configer_ = configer;
-
-		// 映射信息传递buff
-		transDataBuff_ = ExAllocatePool(NonPagedPool, 4096);
-		transDataBuffMdl_ = IoAllocateMdl(transDataBuff_, 4096, false, false, nullptr);
-		MmBuildMdlForNonPagedPool(transDataBuffMdl_);
-		userTransDataAddr_ = (unsigned long long)MmMapLockedPagesSpecifyCache(transDataBuffMdl_, UserMode, MmCached, nullptr, FALSE, NormalPagePriority);
 	}
 	__except(1){
 		DbgPrint("cpu %d SetParam fail %u\n", idx);

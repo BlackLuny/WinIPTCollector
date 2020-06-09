@@ -33,5 +33,3 @@ size_t ReadMemory(HANDLE process, char* buffer, size_t size,
 
 std::string FillTailSpace(const std::string &input, int expectSize);
 std::string RemoveHeadZeros(const std::string& input);
-void ReadMemoryByDrv(unsigned int pid, unsigned long long address, unsigned int len,
-	void* outputBuff, unsigned int outputBuffSize, size_t* outputSize);
