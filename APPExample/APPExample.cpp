@@ -3,14 +3,14 @@
 #include "../share/common/ToolFunc.h"
 int main(int argc, char* argv[])
 {
-	if (argc < 2)
+	if (argc < 3)
 	{
-		std::cout << "Please input process name!\n";
+		std::cout << "APPExample.exe [Process Name] [Output path director]";
 		return 0;
 	}
 
 	// Set data ouput path
-	SetOutPutPath("X:\\");
+	SetOutPutPath(argv[2]);
 	std::string myProcessName = argv[0];
 	unsigned int myPid = GetPid(myProcessName);
 
