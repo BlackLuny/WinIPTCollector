@@ -10,12 +10,12 @@ Please reference Intel manual for more about Intel Processor trace technology.
 
 ## Want to try?
 
-### Step one: Download Release
+### Step 1: Download Release
 
-### Step two:
+### Step 2:
 Install and start the driver "WinIPTCollector.sys";
 
-### Step three:
+### Step 3:
 ```bat
    APPExample.exe [Process name] [output path director]
 ```
@@ -23,5 +23,5 @@ such as:
 ```bat
    APPExample.exe notepad.exe d:\
 ```
-### Step four:
+### Step 4:
    Waiting until you pressing 'Ctrl+C' to cancle collecting.
