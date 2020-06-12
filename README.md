@@ -10,10 +10,11 @@ Please reference Intel manual for more about Intel Processor trace technology.
 
 ## Want to try?
 
-### Step 1: Download Release
+### Step 1:
+    Download Release
 
 ### Step 2:
-Install and start the driver "WinIPTCollector.sys";
+    Install and start the driver "WinIPTCollector.sys";
 
 ### Step 3:
 ```bat
