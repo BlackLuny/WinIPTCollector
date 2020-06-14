@@ -6,4 +6,28 @@ Such features are:
 3. configurable(config.ini);
 
 
-Please reference Intel manual for more about Intel Processor trace technology;
+Please reference Intel manual for more about Intel Processor trace technology.
+
+## Want to try?
+
+### Step 1:
+    Download Release
+
+### Step 2:
+    Install and start the driver "WinIPTCollector.sys";
+
+### Step 3:
+```bat
+   APPExample.exe [Process name] [output path director]
+```
+such as:
+```bat
+   APPExample.exe notepad.exe d:\
+```
+### Step 4:
+   Waiting until you pressing 'Ctrl+C' to cancle collecting.
+   
+## Thanks
+[cheat-engine](https://github.com/cheat-engine/cheat-engine)
+[ini-parser](https://github.com/Poordeveloper/ini-parser)
+[BlackBone](https://github.com/DarthTon/Blackbone)
