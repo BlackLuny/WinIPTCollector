@@ -26,3 +26,8 @@ such as:
 ```
 ### Step 4:
    Waiting until you pressing 'Ctrl+C' to cancle collecting.
+   
+## Thanks
+[cheat-engine](https://github.com/cheat-engine/cheat-engine)
+[ini-parser](https://github.com/Poordeveloper/ini-parser)
+[BlackBone](https://github.com/DarthTon/Blackbone)
